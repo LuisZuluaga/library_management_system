@@ -1,0 +1,10 @@
+<h1>Librarian Dashboard</h1>
+  <p>Total Books: <%= Book.count %></p>
+  <p>Total Borrowed: <%= Borrowing.where(returned_at: nil).count %></p>
+  <p>Books Due Today: <%= @due_today.count %></p>
+<h2>Overdue Members</h2>
+<ul>
+  <% @overdue_members.each do |member| %>
+    <li><%= member.name %> - <%= member.email %></li>
+  <% end %>
+</ul>

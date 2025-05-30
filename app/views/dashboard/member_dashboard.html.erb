@@ -1,0 +1,12 @@
+<h1>Member Dashboard</h1>
+<p>My Borrowed Books</p>
+<ul>
+  <% @my_books.each do |borrowing| %>
+    <li>
+      <%= borrowing.book.title %> - Due: <%= borrowing.due_at %>
+      <% if borrowing.due_at < Date.today %>
+        <strong style="color: red;">Overdue</strong>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
