@@ -6,6 +6,8 @@ class User < ApplicationRecord
   
   enum role: { librarian: 0, member: 1 }
 
+  has_many :borrowings
+
   # Validations
   validates :name, presence: true
 end
