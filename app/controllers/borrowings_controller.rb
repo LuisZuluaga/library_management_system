@@ -1,7 +1,7 @@
 class BorrowingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_borrowing, only: [:destroy]
-  before_action :authorize_librarian!, only: [:destroy]
+  before_action :authorize_librarian!, only: [:return]
 
   def index
     @borrowings = current_user.librarian? ? Borrowing.all : current_user.borrowings
@@ -27,7 +27,7 @@ class BorrowingsController < ApplicationController
     end
   end
 
-  def destroy
+  def return
     if @borrowing.returned_at.nil?
       @borrowing.update(returned_at: Time.current)
       @borrowing.book.increment!(:available_copies)
