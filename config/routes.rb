@@ -8,7 +8,15 @@ Rails.application.routes.draw do
 
   get 'dashboard', to: 'dashboard#index'
 
-  resources :books
-  resources :borrowings, only: [:index, :create, :destroy]
+  namespace :api do
+    namespace :v1 do
+      resources :books
+      resources :borrowings, only: [:index, :create] do
+        member do
+          patch :return # /borrowings/:id/return
+        end
+      end
+    end
+  end
 end
 
