@@ -4,7 +4,14 @@ class BooksController < ApplicationController
   before_action :authorize_librarian!, except: %i[index show]
 
   def index
-    @books = Book.all
+    @query = params[:query]
+    @books = if @query.present?
+      Book.where("title ILIKE :q OR author ILIKE :q OR genre ILIKE :q", q: "%#{@query}%")
+    else
+      Book.all
+    end
+
+    @books = @books.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
   end
 
   def show; end
