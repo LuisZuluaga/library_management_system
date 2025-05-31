@@ -29,11 +29,28 @@ puts "Seeding books..."
 end
 
 puts "Seeding borrowings..."
+
+# Overdue borrowing (due_at in the past)
 Borrowing.create!(
   user: member,
   book: Book.first,
-  borrowed_at: Time.now - 3.days,
-  due_at: Time.now + 7.days
+  borrowed_at: Time.now - 15.days,
+  due_at: Time.now - 3.days
 )
 
+# Active borrowing (due_at in the future)
+Borrowing.create!(
+  user: member,
+  book: Book.second,
+  borrowed_at: Time.now - 2.days,
+  due_at: Time.now + 5.days
+)
+
+# Another active borrowing
+Borrowing.create!(
+  user: member,
+  book: Book.third,
+  borrowed_at: Time.now - 1.day,
+  due_at: Date.today.to_time.change(hour: 12)
+)
 puts "Done seeding!"

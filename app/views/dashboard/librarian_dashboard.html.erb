@@ -1,10 +1,27 @@
-<h1>Librarian Dashboard</h1>
-  <p>Total Books: <%= Book.count %></p>
-  <p>Total Borrowed: <%= Borrowing.where(returned_at: nil).count %></p>
-  <p>Books Due Today: <%= @due_today.count %></p>
-<h2>Overdue Members</h2>
-<ul>
-  <% @overdue_members.each do |member| %>
-    <li><%= member.name %> - <%= member.email %></li>
-  <% end %>
-</ul>
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">Librarian Dashboard</h1>
+
+  <%= link_to "All Books", books_path, class: "inline-block bg-blue-600 text-white px-4 rounded-md hover:bg-blue-700 transition mb-6" %>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+    <div class="bg-white rounded-lg shadow p-4 text-center">
+      <p class="text-gray-500 text-sm">Total Books</p>
+      <p class="text-2xl font-semibold text-blue-600"><%= Book.count %></p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4 text-center">
+      <p class="text-gray-500 text-sm">Total Borrowed</p>
+      <p class="text-2xl font-semibold text-yellow-600"><%= Borrowing.where(returned_at: nil).count %></p>
+    </div>
+    <div class="bg-white rounded-lg shadow p-4 text-center">
+      <p class="text-gray-500 text-sm">Books Due Today</p>
+      <p class="text-2xl font-semibold text-red-600"><%= @due_today.count %></p>
+    </div>
+  </div>
+
+  <h2 class="text-xl font-semibold text-gray-700 mb-2">Overdue Members</h2>
+  <ul class="list-disc list-inside text-gray-700 space-y-1">
+    <% @overdue_members.each do |member| %>
+      <li><span class="font-medium"><%= member.name %></span> – <%= member.email %></li>
+    <% end %>
+  </ul>
+</div>

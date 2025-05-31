@@ -1,6 +1,6 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_book, only: %i[show update destroy]
+  before_action :set_book, only: %i[show update edit destroy]
   before_action :authorize_librarian!, except: %i[index show]
 
   def index
@@ -22,15 +22,12 @@ class BooksController < ApplicationController
 
   def show; end
 
+  def edit; end
+
   def create
   end
 
   def update
-    if @book.update(book_params)
-      redirect_to @book, notice: 'Book was successfully updated.'
-    else
-      render :edit
-    end
   end
 
   def destroy
