@@ -6,9 +6,9 @@ RSpec.describe Borrowing, type: :model do
     expect(borrowing).to be_valid
   end
 
-  it "sets due_at to 2 days after now by default" do
+  it "sets due_at to 2 weeks after now by default" do
     freeze_time do
-      expected_due_at = 2.days.from_now
+      expected_due_at = 2.weeks.from_now
       borrowing = build(:borrowing)
       expect(borrowing.due_at.to_i).to eq(expected_due_at.to_i)
     end
