@@ -32,7 +32,10 @@ class Api::V1::BooksController < ApplicationController
   
   def destroy
     @book.destroy
-    render json: { message: 'Book was successfully deleted.' }, status: :ok
+    respond_to do |format|
+      format.html { redirect_to books_path, notice: 'Book deleted successfully.' }
+      format.json { render json: { message: 'Book was successfully deleted.' }, status: :ok }
+    end
   end
   
   private

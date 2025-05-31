@@ -19,7 +19,10 @@ class Api::V1::BorrowingsController < ApplicationController
     else
       @borrowing = Borrowing.new(user: current_user, book: book, borrowed_at: Time.current)
       if @borrowing.save
-        render json: @borrowing, status: :created
+        respond_to do |format|
+          format.html { redirect_to books_path, notice: 'Book borrowed successfully.' }
+          format.json { render json: @borrowing, status: :created }
+        end
       else
         render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_entity
       end
@@ -39,7 +42,10 @@ class Api::V1::BorrowingsController < ApplicationController
     book = @borrowing.book
     if @borrowing.returned_at.nil?
       @borrowing.update(returned_at: Time.current)
-      render json: { message: 'Book returned successfully' }, status: :ok
+      respond_to do |format|
+        format.html { redirect_to books_path, notice: 'Book returned successfully.' }
+        format.json { render json: { message: 'Book returned successfully.' }, status: :ok }
+      end
     else
       render json: { error: 'Book already returned' }, status: :unprocessable_entity
     end
