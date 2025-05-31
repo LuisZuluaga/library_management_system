@@ -1,4 +1,4 @@
-class BooksController < ApplicationController
+class Api::V1::BooksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_book, only: %i[show update destroy]
   before_action :authorize_librarian!, except: %i[index show]
@@ -9,22 +9,32 @@ class BooksController < ApplicationController
 
   def show; end
 
-  def create
+  def new
+    @book = Book.new
   end
 
-  def update
-    if @book.update(book_params)
-      redirect_to @book, notice: 'Book was successfully updated.'
+  def create
+    @book = Book.new(book_params)
+    if @book.save
+      render json: @book, status: :created
     else
-      render :edit
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
+  
+  def update
+    if @book.update(book_params)
+      render json: @book, status: :ok
+    else
+      render json: { errors: @book.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+  
   def destroy
     @book.destroy
-    redirect_to books_path, notice: 'Book was successfully deleted.'
+    render json: { message: 'Book was successfully deleted.' }, status: :ok
   end
-
+  
   private
 
   def set_book
@@ -39,4 +49,3 @@ class BooksController < ApplicationController
     redirect_to root_path, alert: 'Access denied' unless current_user.librarian?
   end
 end
-

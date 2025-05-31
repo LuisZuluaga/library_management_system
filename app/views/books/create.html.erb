@@ -1,2 +1,52 @@
 <h1>Books#create</h1>
 <p>Find me in app/views/books/create.html.erb</p>
+
+<!-- app/views/pages/create_book.html.erb -->
+<h1>Create Book (via API)</h1>
+
+<form id="book-form">
+  <input type="text" name="title" placeholder="Title" required><br>
+  <input type="text" name="author" placeholder="Author" required><br>
+  <input type="text" name="genre" placeholder="Genre"><br>
+  <input type="text" name="isbn" placeholder="ISBN" required><br>
+  <input type="number" name="total_copies" placeholder="Total Copies" required><br>
+  <button type="submit">Submit</button>
+</form>
+
+<div id="response"></div>
+
+<script>
+document.getElementById("book-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const bookData = {
+    book: {
+      title: formData.get("title"),
+      author: formData.get("author"),
+      genre: formData.get("genre"),
+      isbn: formData.get("isbn"),
+      total_copies: parseInt(formData.get("total_copies"))
+    }
+  };
+
+  try {
+    const response = await fetch("/api/v1/books", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-CSRF-Token": document.querySelector("[name=csrf-token]").content
+      },
+      body: JSON.stringify(bookData)
+    });
+
+    const result = await response.json();
+    document.getElementById("response").innerText = response.ok
+      ? "Book created successfully!"
+      : `Error: ${result.errors.join(", ")}`;
+  } catch (err) {
+    document.getElementById("response").innerText = "Network error!";
+  }
+});
+</script>

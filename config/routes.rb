@@ -1,17 +1,16 @@
 Rails.application.routes.draw do
-  get 'borrowings/index'
-  get 'borrowings/create'
-  get 'borrowings/destroy'
   devise_for :users
 
   root to: 'home#index'
 
   get 'dashboard', to: 'dashboard#index'
 
+  get 'books/new_form', to: 'books#create', as: :new_book_form
+
   namespace :api do
     namespace :v1 do
       resources :books
-      resources :borrowings, only: [:index, :create] do
+      resources :borrowings, only: [:index, :show, :create, :destroy] do
         member do
           patch :return # /borrowings/:id/return
         end
