@@ -16,10 +16,8 @@ class Api::V1::BorrowingsController < ApplicationController
     book = Book.find(params[:book_id])
     if current_user.borrowings.exists?(book_id: book.id)
       render json: { error: 'Already borrowed this book' }, status: :unprocessable_entity
-    elsif book.available_copies <= 0
-      render json: { error: 'No available copies' }, status: :unprocessable_entity
     else
-      @borrowing = Borrowing.new(user: current_user, book: book, due_date: 2.weeks.from_now)
+      @borrowing = Borrowing.new(user: current_user, book: book, due_at: 2.weeks.from_now, borrowed_at: Time.current)
       if @borrowing.save
         book.decrement!(:available_copies)
         render json: @borrowing, status: :created
