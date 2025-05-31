@@ -2,6 +2,24 @@
 
 Ballast Lane Test by Luis Zuluaga. https://github.com/LuisZuluaga/library_management_system#
 
+# 1. Clone the repo
+git clone https://github.com/yourusername/library_management_system.git
+cd library_management_system
+
+# 2. Install dependencies
+bundle install
+
+# 3. Set up the database
+rails db:create
+rails db:migrate
+rails db:seed
+
+# 5. Install Tailwind CSS (if not already installed)
+rails tailwindcss:install
+
+# 6. Run the server
+rails server
+
 This project is a simple library management system built with Ruby on Rails 7, featuring authentication, role-based dashboards, and an API for managing books and borrowings.
 
 ## Why Ruby 3.2 and Rails 7?
