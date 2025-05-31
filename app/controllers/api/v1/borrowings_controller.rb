@@ -16,9 +16,12 @@ class Api::V1::BorrowingsController < ApplicationController
     book = Book.find(params[:book_id])
     if current_user.borrowings.where(book_id: book.id, returned_at: nil).exists?
       render json: { error: 'Already borrowed this book' }, status: :unprocessable_entity
+    elsif book.available_copies <= 0
+      render json: { error: 'No available copies' }, status: :unprocessable_entity
     else
       @borrowing = Borrowing.new(user: current_user, book: book, borrowed_at: Time.current)
       if @borrowing.save
+        book.decrement!(:available_copies)
         respond_to do |format|
           format.html { redirect_to books_path, notice: 'Book borrowed successfully.' }
           format.json { render json: @borrowing, status: :created }
@@ -42,6 +45,7 @@ class Api::V1::BorrowingsController < ApplicationController
     book = @borrowing.book
     if @borrowing.returned_at.nil?
       @borrowing.update(returned_at: Time.current)
+      book.increment!(:available_copies)
       respond_to do |format|
         format.html { redirect_to books_path, notice: 'Book returned successfully.' }
         format.json { render json: { message: 'Book returned successfully.' }, status: :ok }

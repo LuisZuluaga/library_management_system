@@ -1,0 +1,38 @@
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+  <h1 class="text-3xl font-bold text-gray-900 mb-8">Borrowings</h1>
+
+
+
+  <div class="overflow-x-auto bg-white rounded-lg shadow">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead>
+        <tr class="bg-gray-50">
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrowed at</th>
+          <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @borrowings.each do |borrowing| %>
+          <tr class="hover:bg-gray-50 transition-colors">
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= borrowing.user.name %></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= borrowing.book.author %></td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= borrowing.borrowed_at %></td>
+            
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+              <% if current_user.librarian? %>
+               
+                <% if borrowing.returned_at.nil? %>
+                  <%= button_to 'Mark as Returned', return_api_v1_borrowing_path(borrowing), method: :patch, class: "inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" %>
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+
+</div>

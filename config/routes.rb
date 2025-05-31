@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'books/new_form', to: 'books#create', as: :new_book_form
 
   resources :books
+  resources :borrowings, only: [:index]
   
   namespace :api do
     namespace :v1 do

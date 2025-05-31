@@ -53,9 +53,6 @@
                 <%= link_to 'Update', edit_book_path(book), class: 'inline-flex items-center px-3 py-1.5 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors' %>
                 <%= button_to 'Delete', api_v1_book_path(book), method: :delete, data: { confirm: 'Are you sure?' }, class: 'inline-flex items-center px-3 py-1.5 bg-red-600 text-white text-sm rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors' %>
 
-                <% if (borrowing = book.borrowings.find_by(returned_at: nil)) %>
-                  <%= button_to 'Mark as Returned', return_api_v1_borrowing_path(borrowing), method: :patch, class: "inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors" %>
-                <% end %>
               <% else %>
                 <% already_borrowed = book.borrowings.exists?(user_id: current_user.id, returned_at: nil) %>
                 <% if !already_borrowed %>
