@@ -1,5 +1,5 @@
 class Book < ApplicationRecord
-  has_many :borrowings
+  has_many :borrowings, dependent: :destroy
 
   validates :title, :author, :isbn, :total_copies, presence: true
   validates :isbn, uniqueness: true

@@ -20,6 +20,15 @@ rails tailwindcss:install
 # 6. Run the server
 rails server
 
+## 7. Credentials
+## For Librarian
+user: librarian@example.com
+password: password
+
+## For Member
+user: member@example.com
+password: password
+
 This project is a simple library management system built with Ruby on Rails 7, featuring authentication, role-based dashboards, and an API for managing books and borrowings.
 
 ## Why Ruby 3.2 and Rails 7?
