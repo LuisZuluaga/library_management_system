@@ -1,6 +1,6 @@
 # README
 
-Ballast Lane Test by Luis Zuluaga.
+Ballast Lane Test by Luis Zuluaga. https://github.com/LuisZuluaga/library_management_system#
 
 This project is a simple library management system built with Ruby on Rails 7, featuring authentication, role-based dashboards, and an API for managing books and borrowings.
 
