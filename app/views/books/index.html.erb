@@ -60,10 +60,8 @@
                 <% already_borrowed = book.borrowings.exists?(user_id: current_user.id, returned_at: nil) %>
                 <% if !already_borrowed %>
                   <%= button_to 'Borrow', api_v1_borrowings_path(book_id: book.id), method: :post, class: "inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white text-sm rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors" %>
-                <% elsif already_borrowed %>
-                  <span class="text-gray-400 text-sm">Ya alquilado</span>
                 <% else %>
-                  <span class="text-gray-400 text-sm">Sin copias</span>
+                  <span class="text-gray-400 text-sm">Ya alquilado</span>
                 <% end %>
               <% end %>
             </td>

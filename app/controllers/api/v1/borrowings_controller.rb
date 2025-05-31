@@ -14,12 +14,11 @@ class Api::V1::BorrowingsController < ApplicationController
 
   def create
     book = Book.find(params[:book_id])
-    if current_user.borrowings.exists?(book_id: book.id)
+    if current_user.borrowings.where(book_id: book.id, returned_at: nil).exists?
       render json: { error: 'Already borrowed this book' }, status: :unprocessable_entity
     else
-      @borrowing = Borrowing.new(user: current_user, book: book, due_at: 2.weeks.from_now, borrowed_at: Time.current)
+      @borrowing = Borrowing.new(user: current_user, book: book, borrowed_at: Time.current)
       if @borrowing.save
-        book.decrement!(:available_copies)
         render json: @borrowing, status: :created
       else
         render json: { errors: @borrowing.errors.full_messages }, status: :unprocessable_entity
@@ -40,7 +39,6 @@ class Api::V1::BorrowingsController < ApplicationController
     book = @borrowing.book
     if @borrowing.returned_at.nil?
       @borrowing.update(returned_at: Time.current)
-      book.increment!(:available_copies)
       render json: { message: 'Book returned successfully' }, status: :ok
     else
       render json: { error: 'Book already returned' }, status: :unprocessable_entity
