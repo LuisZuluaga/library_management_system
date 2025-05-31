@@ -19,4 +19,9 @@
       </li>
     <% end %>
   </ul>
+
+  <div class="flex justify-end mb-4">
+    <%= link_to "Log Out", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" },
+          class: "inline-block bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition-colors" %>
+  </div>
 </div>
