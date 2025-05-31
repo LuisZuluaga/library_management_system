@@ -4,14 +4,20 @@ class BooksController < ApplicationController
   before_action :authorize_librarian!, except: %i[index show]
 
   def index
-    @query = params[:query]
-    @books = if @query.present?
-      Book.where("title ILIKE :q OR author ILIKE :q OR genre ILIKE :q", q: "%#{@query}%")
-    else
-      Book.all
-    end
+    @title_query = params[:title]
+    @selected_author = params[:author]
+    @selected_genre = params[:genre]
+
+    @books = Book.all
+
+    @books = @books.where("title ILIKE ?", "%#{@title_query}%") if @title_query.present?
+    @books = @books.where(author: @selected_author) if @selected_author.present?
+    @books = @books.where(genre: @selected_genre) if @selected_genre.present?
 
     @books = @books.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
+
+    @all_authors = Book.select(:author).distinct.order(:author).pluck(:author)
+    @all_genres  = Book.select(:genre).distinct.order(:genre).pluck(:genre)
   end
 
   def show; end
